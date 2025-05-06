@@ -17,15 +17,39 @@ function App() {
   // Estados para datos
   const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem('token');
+    console.log("Token en localStorage:", savedToken);
+    
+    if (savedToken) {
+      setToken(savedToken);
+      setView('clients');
+      fetchClients();
+    } else {
+      console.log("No se encontró ningún token");
+    }
+  }, []);
   
   // Comprobar si hay un token guardado al cargar
   useEffect(() => {
+    // Añadir CDN de Bootstrap al cargar el componente
+    const bootstrapCSS = document.createElement('link');
+    bootstrapCSS.rel = 'stylesheet';
+    bootstrapCSS.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css';
+    document.head.appendChild(bootstrapCSS);
+    
     const savedToken = localStorage.getItem('token');
     if (savedToken) {
       setToken(savedToken);
       setView('clients');
       fetchClients();
     }
+    
+    // Limpiar al desmontar
+    return () => {
+      document.head.removeChild(bootstrapCSS);
+    };
   }, []);
   
   // Funciones auxiliares para API
@@ -144,157 +168,205 @@ function App() {
     switch(view) {
       case 'login':
         return (
-          <div>
-            <h2>Iniciar Sesión</h2>
-            <form onSubmit={handleLogin}>
-              <div>
-                <label>Usuario:</label>
-                <input 
-                  type="text" 
-                  name="username" 
-                  value={loginForm.username} 
-                  onChange={handleLoginChange} 
-                  required 
-                />
-              </div>
-              <div>
-                <label>Contraseña:</label>
-                <input 
-                  type="password" 
-                  name="password" 
-                  value={loginForm.password} 
-                  onChange={handleLoginChange} 
-                  required 
-                />
-              </div>
-              <button type="submit">Iniciar Sesión</button>
-            </form>
-            <p>
-              <a href="#" onClick={() => setView('register')}>Registrarse</a>
-            </p>
+          <div className="card shadow-sm">
+            <div className="card-header bg-primary text-white">
+              <h2 className="h4 mb-0">Iniciar Sesión</h2>
+            </div>
+            <div className="card-body">
+              <form onSubmit={handleLogin}>
+                <div className="mb-3">
+                  <label className="form-label">Usuario:</label>
+                  <input 
+                    type="text" 
+                    name="username" 
+                    className="form-control"
+                    value={loginForm.username} 
+                    onChange={handleLoginChange} 
+                    required 
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Contraseña:</label>
+                  <input 
+                    type="password" 
+                    name="password" 
+                    className="form-control"
+                    value={loginForm.password} 
+                    onChange={handleLoginChange} 
+                    required 
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary w-100">Iniciar Sesión</button>
+              </form>
+            </div>
+            <div className="card-footer text-center">
+              <a href="#" className="text-decoration-none" onClick={(e) => { e.preventDefault(); setView('register'); }}>
+                Registrarse
+              </a>
+            </div>
           </div>
         );
         
       case 'register':
         return (
-          <div>
-            <h2>Registro</h2>
-            <form onSubmit={handleRegister}>
-              <div>
-                <label>Usuario:</label>
-                <input 
-                  type="text" 
-                  name="username" 
-                  value={registerForm.username} 
-                  onChange={handleRegisterChange} 
-                  required 
-                />
-              </div>
-              <div>
-                <label>Contraseña:</label>
-                <input 
-                  type="password" 
-                  name="password" 
-                  value={registerForm.password} 
-                  onChange={handleRegisterChange} 
-                  required 
-                />
-              </div>
-              <div>
-                <label>Nombre:</label>
-                <input 
-                  type="text" 
-                  name="nombre" 
-                  value={registerForm.nombre} 
-                  onChange={handleRegisterChange} 
-                  required 
-                />
-              </div>
-              <div>
-                <label>Email:</label>
-                <input 
-                  type="email" 
-                  name="email" 
-                  value={registerForm.email} 
-                  onChange={handleRegisterChange} 
-                  required 
-                />
-              </div>
-              <button type="submit">Registrarse</button>
-            </form>
-            <p>
-              <a href="#" onClick={() => setView('login')}>Iniciar Sesión</a>
-            </p>
+          <div className="card shadow-sm">
+            <div className="card-header bg-success text-white">
+              <h2 className="h4 mb-0">Registro</h2>
+            </div>
+            <div className="card-body">
+              <form onSubmit={handleRegister}>
+                <div className="mb-3">
+                  <label className="form-label">Usuario:</label>
+                  <input 
+                    type="text" 
+                    name="username" 
+                    className="form-control"
+                    value={registerForm.username} 
+                    onChange={handleRegisterChange} 
+                    required 
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Contraseña:</label>
+                  <input 
+                    type="password" 
+                    name="password" 
+                    className="form-control"
+                    value={registerForm.password} 
+                    onChange={handleRegisterChange} 
+                    required 
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Nombre:</label>
+                  <input 
+                    type="text" 
+                    name="nombre" 
+                    className="form-control"
+                    value={registerForm.nombre} 
+                    onChange={handleRegisterChange} 
+                    required 
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Email:</label>
+                  <input 
+                    type="email" 
+                    name="email" 
+                    className="form-control"
+                    value={registerForm.email} 
+                    onChange={handleRegisterChange} 
+                    required 
+                  />
+                </div>
+                <button type="submit" className="btn btn-success w-100">Registrarse</button>
+              </form>
+            </div>
+            <div className="card-footer text-center">
+              <a href="#" className="text-decoration-none" onClick={(e) => { e.preventDefault(); setView('login'); }}>
+                Iniciar Sesión
+              </a>
+            </div>
           </div>
         );
         
       case 'clients':
         return (
-          <div>
-            <h2>Lista de Clientes</h2>
-            <table border="1">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Usuario</th>
-                  <th>Nombre</th>
-                  <th>Email</th>
-                </tr>
-              </thead>
-              <tbody>
-                {clients.map(client => (
-                  <tr key={client.id}>
-                    <td>{client.id}</td>
-                    <td>{client.username}</td>
-                    <td>{client.nombre}</td>
-                    <td>{client.email}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="card shadow-sm">
+            <div className="card-header bg-info text-white">
+              <h2 className="h4 mb-0">Lista de Clientes</h2>
+            </div>
+            <div className="card-body p-0">
+              <div className="table-responsive">
+                <table className="table table-striped table-hover mb-0">
+                  <thead>
+                    <tr className="table-dark">
+                      <th>ID</th>
+                      <th>Usuario</th>
+                      <th>Nombre</th>
+                      <th>Email</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {clients.length > 0 ? (
+                      clients.map(client => (
+                        <tr key={client.id}>
+                          <td>{client.id}</td>
+                          <td>{client.username}</td>
+                          <td>{client.nombre}</td>
+                          <td>{client.email}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="4" className="text-center">No hay clientes para mostrar</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         );
         
       case 'products':
         return (
-          <div>
-            <h2>Productos</h2>
-            <div>
-              <input 
-                type="text" 
-                placeholder="Buscar producto..." 
-                value={search} 
-                onChange={(e) => setSearch(e.target.value)} 
-              />
-              <button onClick={fetchProducts}>Buscar</button>
+          <div className="card shadow-sm">
+            <div className="card-header bg-warning">
+              <h2 className="h4 mb-0">Productos</h2>
             </div>
-            <table border="1">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Descripción</th>
-                  <th>Precio</th>
-                  <th>Stock</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map(product => (
-                  <tr key={product.id}>
-                    <td>{product.id}</td>
-                    <td>{product.nombre}</td>
-                    <td>{product.descripcion}</td>
-                    <td>${product.precio}</td>
-                    <td>{product.stock}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="card-body">
+              <div className="input-group mb-3">
+                <input 
+                  type="text" 
+                  className="form-control"
+                  placeholder="Buscar producto..." 
+                  value={search} 
+                  onChange={(e) => setSearch(e.target.value)} 
+                />
+                <button className="btn btn-outline-secondary" onClick={fetchProducts}>Buscar</button>
+              </div>
+              
+              <div className="table-responsive">
+                <table className="table table-striped table-hover">
+                  <thead>
+                    <tr className="table-dark">
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Descripción</th>
+                      <th>Precio</th>
+                      <th>Stock</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {products.length > 0 ? (
+                      products.map(product => (
+                        <tr key={product.id}>
+                          <td>{product.id}</td>
+                          <td>{product.nombre}</td>
+                          <td>{product.descripcion}</td>
+                          <td>${product.precio}</td>
+                          <td>
+                            <span className={`badge ${product.stock > 10 ? 'bg-success' : product.stock > 0 ? 'bg-warning' : 'bg-danger'}`}>
+                              {product.stock}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="5" className="text-center">No hay productos para mostrar</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         );
         
       default:
-        return <div>Vista no encontrada</div>;
+        return <div className="alert alert-danger">Vista no encontrada</div>;
     }
   }
   
@@ -302,10 +374,26 @@ function App() {
   function renderNav() {
     if (token) {
       return (
-        <nav>
-          <button onClick={() => setView('clients')}>Clientes</button>
-          <button onClick={() => setView('products')}>Productos</button>
-          <button onClick={handleLogout}>Cerrar Sesión</button>
+        <nav className="navbar bg-dark mb-4 p-2 rounded">
+          <div className="container-fluid">
+            <div className="navbar-nav me-auto mb-0 mb-lg-0">
+              <button 
+                className={`btn me-2 ${view === 'clients' ? 'btn-light' : 'btn-outline-light'}`} 
+                onClick={() => setView('clients')}
+              >
+                Clientes
+              </button>
+              <button 
+                className={`btn me-2 ${view === 'products' ? 'btn-light' : 'btn-outline-light'}`} 
+                onClick={() => setView('products')}
+              >
+                Productos
+              </button>
+            </div>
+            <button className="btn btn-danger" onClick={handleLogout}>
+              Cerrar Sesión
+            </button>
+          </div>
         </nav>
       );
     }
@@ -315,17 +403,22 @@ function App() {
   // Mensaje de error
   function renderError() {
     if (error) {
-      return <div style={{color: 'red', margin: '10px 0'}}>{error}</div>;
+      return (
+        <div className="alert alert-danger mb-3">{error}</div>
+      );
     }
     return null;
   }
   
   return (
-    <div style={{maxWidth: '800px', margin: '0 auto', padding: '10px'}}>
-      <h1>Sistema Simple</h1>
+    <div className="container py-4">
+      <h1 className="text-center mb-4">Sistema Simple</h1>
       {renderNav()}
       {renderError()}
       {renderContent()}
+      <footer className="mt-4 text-center text-muted">
+        <small>&copy; 2025 Sistema Simple</small>
+      </footer>
     </div>
   );
 }
