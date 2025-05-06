@@ -19,38 +19,33 @@ function App() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    console.log("Token en localStorage:", savedToken);
-    
-    if (savedToken) {
-      setToken(savedToken);
-      setView('clients');
-      fetchClients();
-    } else {
-      console.log("No se encontró ningún token");
-    }
-  }, []);
-  
-  // Comprobar si hay un token guardado al cargar
-  useEffect(() => {
-    // Añadir CDN de Bootstrap al cargar el componente
+    // Añadir Bootstrap
     const bootstrapCSS = document.createElement('link');
     bootstrapCSS.rel = 'stylesheet';
     bootstrapCSS.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css';
     document.head.appendChild(bootstrapCSS);
-    
+  
+    // Verificar token
     const savedToken = localStorage.getItem('token');
-    if (savedToken) {
+    console.log("Token en localStorage:", savedToken);
+  
+    if (savedToken && savedToken !== 'null' && savedToken !== 'undefined') {
       setToken(savedToken);
       setView('clients');
-      fetchClients();
+    } else {
+      console.log("No se encontró ningún token válido");
     }
-    
-    // Limpiar al desmontar
+  
     return () => {
       document.head.removeChild(bootstrapCSS);
     };
   }, []);
+
+  useEffect(() => {
+    if (token && view === 'clients') {
+      fetchClients();
+    }
+  }, [token, view]);
   
   // Funciones auxiliares para API
   async function fetchApi(endpoint, options = {}) {
