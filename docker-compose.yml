@@ -1,73 +1,33 @@
-version: '3.8'
+version: '3'
 
 services:
-  # Frontend - React/Vue/Angular
   frontend:
     build: ./frontend
     ports:
-      - "4000:4000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - "4000:3000"
     depends_on:
       - api
-    networks:
-      - app-network
-    deploy:
-      resources:
-        limits:
-          memory: 128M      # Reducido a 128MB
-          cpus: "0.25"      # Un cuarto de núcleo de CPU
 
-  # API - Node.js/Express
   api:
     build: ./api
     ports:
       - "8000:8000"
-    volumes:
-      - ./api:/app
-      - /app/node_modules
     depends_on:
       - db
     environment:
-      DB_HOST: db
-      DB_USER: user
-      DB_PASSWORD: password
-      DB_NAME: appdb
-      DB_PORT: 3306
-      JWT_SECRET: your_jwt_secret_key
-    networks:
-      - app-network
-    deploy:
-      resources:
-        limits:
-          memory: 128M      # Reducido a 128MB
-          cpus: "0.50"      # Medio núcleo de CPU
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=app_db
 
-  # Base de datos MySQL
   db:
-    image: mysql:5.7      # Cambiado de mysql:5.7-alpine a mysql:5.7
-    ports:
-      - "3306:3306"
+    image: postgres:13-alpine
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: appdb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=app_db
     volumes:
-      - mysql-data:/var/lib/mysql
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - app-network
-    deploy:
-      resources:
-        limits:
-          memory: 128M      # Reducido a 128MB
-          cpus: "0.50"      # Medio núcleo de CPU
-
-networks:
-  app-network:
-    driver: bridge
+      - db-data:/var/lib/postgresql/data
 
 volumes:
-  mysql-data:
+  db-data:
