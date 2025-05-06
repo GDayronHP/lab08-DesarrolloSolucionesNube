@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // URL de la API
-const API_URL = 'http://localhost:8000';
+const API_URL = 'http://35.175.244.62:8000';
 
 function App() {
   // Estados generales
