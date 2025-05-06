@@ -91,7 +91,6 @@ function App() {
       localStorage.setItem('token', data.token);
       setToken(data.token);
       setView('clients');
-      fetchClients();
     } catch (err) {
       // Error ya está establecido en fetchApi
     }
@@ -110,7 +109,6 @@ function App() {
       localStorage.setItem('token', data.token);
       setToken(data.token);
       setView('clients');
-      fetchClients();
     } catch (err) {
       // Error ya está establecido en fetchApi
     }
