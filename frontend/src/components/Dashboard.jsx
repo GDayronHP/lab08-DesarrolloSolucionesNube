@@ -30,11 +30,11 @@ const Dashboard = () => {
         };
         
         // Intentar obtener datos del usuario para validar el token
-        const response = await axios.get(`http://localhost:8000/api/clientes/${JSON.parse(storedUser).id}`, config);
+        const response = await axios.get(`http://54.211.90.70:8000/api/clientes/${JSON.parse(storedUser).id}`, config);
         setUser(response.data);
         
         // Obtener conteo de productos
-        const productsResponse = await axios.get('http://localhost:8000/api/productos');
+        const productsResponse = await axios.get('http://54.211.90.70:8000/api/productos');
         setProductCount(productsResponse.data.length);
         
         setLoading(false);

@@ -23,7 +23,7 @@ const Login = () => {
     setError('');
     
     try {
-      const response = await axios.post('http://localhost:8000/api/login', formData);
+      const response = await axios.post('http://54.211.90.70:8000/api/login', formData);
       
       // Guardar el token en localStorage
       localStorage.setItem('token', response.data.token);

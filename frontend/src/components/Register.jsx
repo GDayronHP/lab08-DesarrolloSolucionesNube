@@ -38,7 +38,7 @@ const Register = () => {
       const dataToSend = { ...formData };
       delete dataToSend.confirmPassword;
       
-      await axios.post('http://localhost:8000/api/register', dataToSend);
+      await axios.post('http://54.211.90.70:8000/api/register', dataToSend);
       
       // Redireccionar a la página de login
       navigate('/login');

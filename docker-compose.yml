@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   # Frontend - React/Vue/Angular
@@ -13,6 +13,11 @@ services:
       - api
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          memory: 128M      # Reducido a 128MB
+          cpus: "0.25"      # Un cuarto de núcleo de CPU
 
   # API - Node.js/Express
   api:
@@ -33,10 +38,15 @@ services:
       JWT_SECRET: your_jwt_secret_key
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          memory: 128M      # Reducido a 128MB
+          cpus: "0.50"      # Un cuarto de núcleo de CPU
 
   # Base de datos MySQL
   db:
-    image: mysql:8.0
+    image: mysql:5.7-alpine  # Usando versión más ligera
     ports:
       - "3306:3306"
     environment:
@@ -49,6 +59,11 @@ services:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          memory: 128M      # Reducido a 128MB
+          cpus: "0.50"      # Un cuarto de núcleo de CPU
 
 networks:
   app-network:
