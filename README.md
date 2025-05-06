@@ -9,7 +9,7 @@ Este proyecto es una aplicación web básica que cumple con los requisitos funci
 ---
 
 ## 📁 Estructura del Proyecto
-
+```bash
 proyecto/
 ├── docker-compose.yml
 ├── frontend/
