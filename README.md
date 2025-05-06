@@ -24,7 +24,7 @@ proyecto/
 ├── Dockerfile
 ├── package.json
 └── index.js
-
+```
 
 ---
 
