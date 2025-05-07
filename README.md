@@ -30,9 +30,29 @@ proyecto/
 
 ## 🚀 Instrucciones de Instalación
 
-1. **Clona o crea la estructura del proyecto** según el esquema anterior.
-2. **Agrega el código fuente** en cada archivo según lo proporcionado.
-3. En la raíz del proyecto, ejecuta el siguiente comando:
+1. **Clona el proyecto** usando el siguiente comando:
 
-```bash
-docker-compose up -d
+   ```bash
+   git clone <URL-del-repositorio>
+   ```
+
+2. **Ingresa al directorio del proyecto**:
+
+   ```bash
+   cd lab08-DesarrolloSolucionesNube
+   ```
+
+3. **Levanta los servicios con Docker Compose (Forma moderna)**:
+
+   ```bash
+   docker compose up -d
+   ```
+
+4. Espera a que todos los servicios se inicien correctamente.
+
+5. Abre tu navegador y accede a la aplicación usando la siguiente estructura:  
+   ```
+   http://<tu-ip>:4000
+   ```
+
+
